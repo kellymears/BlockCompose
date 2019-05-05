@@ -2,7 +2,7 @@
 
 Important notes: I have only tested this in PHP 7.3 using the development build of [Sage 10](https://github.com/roots/sage). This library has real utility but it is still in early dev and should be used with abundant caution.
 
-A portof this library that doesn't depend on Sage's immaculate stack might be doable --  and I'm willing to work on that if there is interest -- but the best part of this package is flat-out not possible without the Blade view engine.
+A port of this library that doesn't depend on Sage's immaculate stack might be doable --  and I'm willing to work on that if there is interest -- but the best part of this package is flat-out not possible without the Blade view engine.
 
 TLDR; You should use Sage.
 
@@ -48,6 +48,10 @@ You don't even need to write a `save()` method in js. 😲
   </div>
 </div>
 ```
+
+## See for yourself
+
+I have included an example 'card' block in this repo (`./example`). Personally I'm just keeping all my block files bundled up together like this (in `./resources`). For me it's just flat-out easier to track like this but there is no reason that all the component files have to be in one dir if you want to separate out your scripts, templates and registrations in a more traditional way.
 
 ## Scripts
 
