@@ -1,4 +1,12 @@
-# Get your shit done again
+# Block Builder
+
+Important notes: I have only tested this in PHP 7.3 using the development build of [Sage 10](https://github.com/roots/sage). This library has real utility but it is still in early dev and should be used with abundant caution.
+
+A portof this library that doesn't depend on Sage's immaculate stack might be doable --  and I'm willing to work on that if there is interest -- but the best part of this package is flat-out not possible without the Blade view engine.
+
+TLDR; You should use Sage.
+
+## Get Shit Done Again
 
 Crying in the shower about how the first half of 2019 has gone? Well dry off, pump some jams and maybe throw a couple darts at your Mullenwag dartboard. Because it's time to feel _fluent_ again because we're developers and that's just _how we roll, B._
 
