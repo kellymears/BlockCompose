@@ -2,7 +2,7 @@
 
 namespace Blocks;
 
-use function Roots\asset;
+use function \Roots\asset;
 
 /**
  * Script
@@ -303,8 +303,6 @@ class Script
                 $this->defer,
             );
         });
-
-        return $this;
     }
 
     /**
@@ -317,6 +315,10 @@ class Script
     {
         if (isset($script['name'])) {
             $this->setName($script['name']);
+        }
+
+        if (isset($script['namespace'])) {
+            $this->setNamespace($script['namespace']);
         }
 
         if (isset($script['type'])) {

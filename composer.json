@@ -1,0 +1,28 @@
+{
+  "name": "tiny-pixel/block-builder",
+  "type": "library",
+  "license": "MIT",
+  "description": "Object oriented helper library for WordPress 5",
+  "homepage": "https://tinypixel.dev",
+  "authors": [
+    {
+      "name": "Kelly Mears",
+      "email": "developers@tinypixel.dev",
+      "homepage": "https://github.com/kellymears"
+    }
+  ],
+  "keywords": [
+    "wordpress",
+    "gutenberg"
+  ],
+  "autoload": {
+    "psr-4": {
+      "Blocks\\": ""
+    }
+  },
+  "require": {
+    "php": "^7.1",
+    "composer/installers": "^1.0",
+    "tightenco/collect": "^5.8.15"
+  }
+}

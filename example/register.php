@@ -2,22 +2,20 @@
 
 namespace App;
 
-use \Blocks\Builder;
+use \App\Blocks\Card;
+use \Blocks\Script;
 
-$block = new Builder();
+/**
+ * Helper avaialable to register your script
+ */
+$script = (new Script([
+    'name'      => 'blocks',
+    'namespace' => 'sage',
+    'file'      => 'blocks/index.js',
+    'type'      => 'block',
+]))->register();
 
-$block
-    ->name('card')
-    ->namespace('sage')
-
-    ->addString('heading')
-    ->addString('copy')
-
-    ->addEditorScript()
-        ->name('blocks')
-        ->usesFile('blocks/index.js')
-        ->usedByBlocks()
-        ->register();
-
-// Register
-$block->register();
+/**
+ * Instantiate card block
+ */
+new Blocks\Card();

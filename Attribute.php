@@ -19,11 +19,18 @@ class Attribute
         $this->name = $name ?? null;
         $this->type = $type ?? null;
 
-        if ($this->isValid()) {
-            return (array) $this->toArray();
-        }
+        return $this->toArray();
+    }
 
-        return null;
+    /**
+     * Enforces attribute as an array
+     *
+     * @param void
+     * @return array attribute
+     */
+    public function toArray()
+    {
+        return [$this->name => ['type' => $this->type]];
     }
 
     /**
@@ -63,29 +70,5 @@ class Attribute
         $this->type = $type;
 
         return $self;
-    }
-
-    /**
-     * Enforces attribute as an array
-     *
-     * @param void
-     * @return array attribute
-     */
-    public function toArray()
-    {
-        return (array) [$this->name => ['type' => $this->type]];
-    }
-
-    /**
-     * Checks if attribute is miniminally valid
-     *
-     * @param void
-     * @return binary validity
-     */
-    public function isValid()
-    {
-        return (isset($this->name) && isset($this->type))
-               ? true
-               : false;
     }
 }
