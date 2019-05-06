@@ -32,43 +32,4 @@ class Attribute
     {
         return [$this->name => ['type' => $this->type]];
     }
-
-    /**
-     * Set Name
-     *
-     * @param string name
-     * @return self
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * setName() sugar
-     *
-     * @param string name
-     * @return self
-     */
-    public function named($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * set attribute type
-     *
-     * @param string type
-     * @return self;
-     */
-    public function setType($type)
-    {
-        $this->type = $type;
-
-        return $self;
-    }
 }

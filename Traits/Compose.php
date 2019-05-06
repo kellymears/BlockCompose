@@ -2,7 +2,7 @@
 
 namespace Blocks\Traits;
 
-use function Roots\view;
+use function \Roots\view;
 
 trait Compose
 {
@@ -15,16 +15,15 @@ trait Compose
     public function compose()
     {
         add_action('init', function () {
+            $attributes = collect($this->attributes())->toArray();
             register_block_type("{$this->namespace}/{$this->name}", [
-                'attributes' => [
-                    collect($this->attributes())->toArray()
-                ],
+                'attributes' => [$attributes],
                 'editor_script' => $this->editor_script,
                 'render_callback' => function ($attributes) {
-                    $view = "blocks.{$this->name}.{$this->name}";
-                    $data = $this->viewWith(collect($attributes)->toArray());
-
-                    return view($view, $data);
+                    return view(
+                        "blocks.{$this->name}.{$this->name}",
+                        $this->viewWith($attributes)
+                    );
                 }
             ]);
         });

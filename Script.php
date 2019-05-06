@@ -72,221 +72,6 @@ class Script
     }
 
     /**
-     * Asset path helper
-     */
-    private function getAsset()
-    {
-        return get_theme_file_uri("{$this->base_path}/{$this->file}");
-    }
-
-    /**
-     * Set namespace
-     *
-     * @param  string script namespace
-     * @return self
-     */
-    public function setNamespace(string $namespace)
-    {
-        $this->namespace = $namespace;
-
-        return $this;
-    }
-
-    /**
-     * setNamespace() sugar
-     *
-     * @param  string script namespace
-     * @return self
-     */
-    public function namespace(string $namespace)
-    {
-        $this->setNamespace($namespace);
-
-        return $this;
-    }
-
-    /**
-     * Get namespace
-     *
-     * @param  void
-     * @return self
-     */
-    public function getNamespace()
-    {
-        return $this->namespace;
-    }
-
-    /**
-     * Set name
-     *
-     * @param string name
-     * @return self
-     */
-    public function setName(string $name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * Get Name
-     *
-     * @return string name
-     * @return self
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * getName() sugar
-     *
-     * @return string name
-     * @return self
-     */
-    public function name(string $name)
-    {
-        $this->setName($name);
-
-        return $this;
-    }
-
-    /**
-     * Get qualified name
-     *
-     * @param void
-     * @return string namespaced script
-     */
-    public function getDesignation()
-    {
-        return "{$this->namespace}/{$this->name}";
-    }
-
-    /**
-     * Get file
-     * @param void
-     * @return string file
-     */
-    public function getFile()
-    {
-        return $this->file;
-    }
-
-    /**
-     * Set file
-     *
-     * @param string filename
-     * @return self
-     */
-    public function setFile($file)
-    {
-        $this->file = $file;
-
-        return $this;
-    }
-
-    /**
-     * setFile() sugar
-     *
-     * @param string filename
-     * @return self
-     */
-    public function usesFile($file)
-    {
-        $this->setFile($file);
-
-        return $this;
-    }
-
-    /**
-     * Set script version
-     *
-     * @param string version
-     * @return self
-     */
-    public function setVersion($ver)
-    {
-        $this->version = $ver;
-
-        return $this;
-    }
-
-    /**
-     * Flag as deferred
-     *
-     * @param  void
-     * @return self
-     */
-    public function defer()
-    {
-        $this->defer = true;
-
-        return $this;
-    }
-
-    /**
-     * Set type
-     * @param  string type (plugin or block)
-     * @return self
-     */
-    public function setType($type)
-    {
-        $this->type = $type;
-
-        return $this;
-    }
-
-    /**
-     * Get type
-     *
-     * @param  void
-     * @return string type of script
-     */
-    public function getType()
-    {
-        return $this->type;
-    }
-
-    /**
-     * setType() sugar
-     */
-    public function usedByBlocks()
-    {
-        $this->setType('block');
-
-        return $this;
-    }
-
-    /**
-     * setType() sugar
-     */
-    public function usedByPlugins()
-    {
-        $this->setType('plugin');
-
-        return $this;
-    }
-
-    /**
-     * get Dependencies based on type param
-     *
-     * @param  void
-     * @return mixed array
-     */
-    public function getDependencies()
-    {
-        if ($this->type == 'block') {
-            return $this->dependencies->blocks;
-        } elseif ($this->type == 'plugin') {
-            return $this->dependencies->plugins;
-        }
-
-        return null;
-    }
-
-    /**
      * Register editor block scripts
      *
      * @param  void
@@ -338,5 +123,161 @@ class Script
         }
 
         return $this;
+    }
+
+    /**
+     * Asset path helper
+     */
+    private function getAsset()
+    {
+        return get_theme_file_uri("{$this->base_path}/{$this->file}");
+    }
+
+    /**
+     * Set namespace
+     *
+     * @param  string script namespace
+     * @return self
+     */
+    public function setNamespace(string $namespace)
+    {
+        $this->namespace = $namespace;
+
+        return $this;
+    }
+
+    /**
+     * Get namespace
+     *
+     * @param  void
+     * @return self
+     */
+    public function getNamespace()
+    {
+        return $this->namespace;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string name
+     * @return self
+     */
+    public function setName(string $name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get Name
+     *
+     * @return string name
+     * @return self
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Get qualified name
+     *
+     * @param void
+     * @return string namespaced script
+     */
+    public function getDesignation()
+    {
+        return "{$this->namespace}/{$this->name}";
+    }
+
+    /**
+     * Get file
+     * @param void
+     * @return string file
+     */
+    public function getFile()
+    {
+        return $this->file;
+    }
+
+    /**
+     * Set file
+     *
+     * @param string filename
+     * @return self
+     */
+    public function setFile($file)
+    {
+        $this->file = $file;
+
+        return $this;
+    }
+
+    /**
+     * Set script version
+     *
+     * @param string version
+     * @return self
+     */
+    public function setVersion($ver)
+    {
+        $this->version = $ver;
+
+        return $this;
+    }
+
+    /**
+     * Flag as deferred
+     *
+     * @param  void
+     * @return self
+     */
+    public function defer()
+    {
+        $this->defer = true;
+
+        return $this;
+    }
+
+    /**
+     * Set type
+     *
+     * @param  string type (plugin or block)
+     * @return self
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @param  void
+     * @return string type of script
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * Get Dependencies
+     *
+     * @param  void
+     * @return mixed array
+     */
+    public function getDependencies()
+    {
+        if ($this->type == 'block') {
+            return $this->dependencies->blocks;
+        } elseif ($this->type == 'plugin') {
+            return $this->dependencies->plugins;
+        }
+        return null;
     }
 }
