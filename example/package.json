@@ -1,0 +1,39 @@
+{
+  "private": true,
+  "scripts": {
+    "build": "cross-env NODE_ENV=development run-s mix",
+    "build:production": "cross-env NODE_ENV=production run-s clean mix",
+    "start": "cross-env NODE_ENV=development run-s \"mix --watch\"",
+    "hot": "cross-env NODE_ENV=development run-s build mix:hot",
+    "mix": "webpack --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "mix:hot": "webpack-dev-server --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "clean": "run-p clean:*",
+    "clean:dist": "rimraf dist",
+    "clean:views": "rimraf storage/framework/views/*.php",
+    "lint": "run-s -c lint:*",
+    "lint:scripts": "eslint resources/assets/scripts",
+    "lint:styles": "stylelint \"resources/assets/**/*.{vue,css,sass,scss,sss,less}\"",
+    "test": "run-s -c lint"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.26.5",
+    "browser-sync-webpack-plugin": "2.0.1",
+    "cross-env": "^5.2.0",
+    "eslint": "^5.11",
+    "eslint-plugin-import": "^2.14",
+    "laravel-mix": "^4.0.15",
+    "laravel-mix-wp-blocks": "^0.1.2",
+    "npm-run-all": "^4.1.5",
+    "rimraf": "^2.6",
+    "sass": "^1.19.0",
+    "sass-loader": "7.*",
+    "stylelint": "^9.9",
+    "stylelint-config-standard": "^18.2",
+    "vue-template-compiler": "^2.6.10"
+  },
+  "dependencies": {
+    "bootstrap": "^4.3.1",
+    "jquery": "^3.4.0",
+    "popper.js": "^1.15.0"
+  }
+}

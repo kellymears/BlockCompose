@@ -1,45 +1,29 @@
 <?php
 
-namespace Blocks\Traits;
+namespace BlockCompose\Traits;
 
 use function \Roots\view;
 
 trait Compose
 {
     /**
-     * Register blocktype with WordPress and set view
-     *
-     * @param  object data
-     * @return void
-     */
-    public function compose()
-    {
-        add_action('init', function () {
-            $attributes = collect($this->attributes())->toArray();
-            register_block_type("{$this->namespace}/{$this->name}", [
-                'attributes' => [$attributes],
-                'editor_script' => $this->editor_script,
-                'render_callback' => function ($attributes) {
-                    return view(
-                        "blocks.{$this->name}.{$this->name}",
-                        $this->viewWith($attributes)
-                    );
-                }
-            ]);
-        });
-
-        return $this;
-    }
-
-    /**
-     * Provide a hook to manipulate block attributes
+     * Provide a hook to manipulate block markup
      * prior to presentation in the view.
      *
      * @param  array block attributes
      * @return array view data
      */
-    public function viewWith($attributes)
+    public function viewWith($attributes, $content)
     {
         return $attributes;
+    }
+
+    /**
+     * Provide a hook to manipulate block data
+     * prior to inclusion in BlockCompose\Composer\viewWith
+     */
+    public function processBlockData($block, $source_block)
+    {
+        return $block;
     }
 }

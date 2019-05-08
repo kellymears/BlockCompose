@@ -1,6 +1,6 @@
 <?php
 
-namespace Blocks;
+namespace BlockCompose;
 
 use function \Roots\asset;
 

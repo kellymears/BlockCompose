@@ -2,8 +2,8 @@
 
 namespace App;
 
-use \App\Blocks\Card;
-use \Blocks\Script;
+use \App\Blocks;
+use \BlockCompose\Script;
 
 /**
  * Helper avaialable to register your script

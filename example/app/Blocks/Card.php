@@ -2,25 +2,17 @@
 
 namespace App\Blocks;
 
-use \Blocks\Builder;
-use \Blocks\Attribute;
-use \Blocks\Traits\Compose;
+use \BlockCompose\Composer;
+use \BlockCompose\Attribute;
+use \BlockCompose\Traits\Compose;
 
-class Card extends Builder
+class Card extends Composer
 {
-    use Compose;
-
     public $name = 'card'; // block name
     public $namespace = 'sage'; // block namespace
-    public $editor_script = 'sage/blocks'; // script
+    public $style = 'sage/blocks'; // registered style
+    public $editor_script = 'sage/blocks'; // registered script
 
-    /**
-     * Return array of attributes for use in the
-     * block.
-     *
-     * @param  array block attributes
-     * @return array view data
-     */
     public function attributes()
     {
         return [
@@ -29,15 +21,18 @@ class Card extends Builder
         ];
     }
 
-    /**
-     * Manipulate block attributes
-     * prior to presentation in the view.
-     *
-     * @param  array block attributes
-     * @return array view data
-     */
-    public function viewWith($attributes)
+
+    // Modify source block data prior viewWith hook
+    public function processBlockData($block, $source_block)
     {
-        return $view_data = $attributes;
+        return $block;
     }
+
+    // Modify attributes and markup prior to view
+    public function viewWith($attributes, $content)
+    {
+        return $attributes;
+    }
+
+    use Compose;
 }
