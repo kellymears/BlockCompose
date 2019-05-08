@@ -61,7 +61,7 @@ class Composer
     private function renderBlockData()
     {
         add_filter('render_block_data', function ($block, $source_block) {
-            return $this->modifyData($block, $source_block);
+            return $this->processBlockData($block, $source_block);
         }, 10, 2);
     }
 
