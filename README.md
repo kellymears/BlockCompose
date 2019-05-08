@@ -1,4 +1,4 @@
-# Block Builder
+# BlockCompose
 
 View composer and attribute builder for Sage 10 and WordPress' Project Gutenberg editor.
 
@@ -16,8 +16,8 @@ In `register.php` we set our script and instantiate our Card. Where this is done
 
 namespace App;
 
-use \App\Blocks\Card;
-use \Blocks\Script;
+use \App\Blocks;
+use \BlockCompose\Script;
 
 /**
  * Helper avaialable to register your script
@@ -43,25 +43,17 @@ Next, it probably makes sense to check out the `Card` class.
 
 namespace App\Blocks;
 
-use \Blocks\Builder;
-use \Blocks\Attribute;
-use \Blocks\Traits\Compose;
+use \BlockCompose\Composer;
+use \BlockCompose\Attribute;
+use \BlockCompose\Traits\Compose;
 
-class Card extends Builder
+class Card extends Composer
 {
-    use Compose;
-
     public $name = 'card'; // block name
     public $namespace = 'sage'; // block namespace
-    public $editor_script = 'sage/blocks'; // script
+    public $style = 'sage/blocks'; // registered style
+    public $editor_script = 'sage/blocks'; // registered script
 
-    /**
-     * Return array of attributes for use in the
-     * block.
-     *
-     * @param  array block attributes
-     * @return array view data
-     */
     public function attributes()
     {
         return [
@@ -70,17 +62,20 @@ class Card extends Builder
         ];
     }
 
-    /**
-     * Manipulate block attributes
-     * prior to presentation in the view.
-     *
-     * @param  array block attributes
-     * @return array view data
-     */
-    public function viewWith($attributes)
+
+    // Modify source block data prior viewWith hook
+    public function processBlockData($block, $source_block)
     {
-        return $view_data = $attributes;
+        return $block;
     }
+
+    // Modify attributes and markup prior to view
+    public function viewWith($attributes, $content)
+    {
+        return $attributes;
+    }
+
+    use Compose;
 }
 ```
 
@@ -88,9 +83,11 @@ After the boilerplate you'll need to set the `name`, `namespace` and `editor_scr
 
 In the `attributes` method you need to return an array of attributes for use in the block. Here, I am using the `Blocks\Attribute` class to make it a little easier, but -- as with `\Block\Script` -- this is totally optional. You can also just return an associative array as specified by the WordPress API.
 
-The last method is `viewWith`. This optional method gives you a chance to manipulate the data that will be made available to your view. This is for when your block attributes are returning data to be used in a posts query, for example.
+The `viewWith` method is optional and gives you a chance to manipulate the attributes that will be made available to your view. This is useful when your block attributes are returning data to be used in a posts query, for example.
 
-That's it. When this block is requested on the frontend, it will be composed by these rules and rendered with its associated Blade view. In the example card block above the view called is `blocks.card.card`.
+Note that `viewWith` does not expose attributes with default values, amongst other things. It's weird. But `processBlockData` exposes all available block data for manipulation. This method will be called directly _before_ `viewWith`
+
+That's it. When this block is requested on the frontend, it will be composed by these rules and rendered with its associated Blade view. In the example card block above the view called is `blocks.card`.
 
 ### View
 
