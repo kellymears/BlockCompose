@@ -2,6 +2,10 @@
 
 View composer and attribute builder for Sage 10 and WordPress' Project Gutenberg editor.
 
+## ⚠️ Package: this is still in _active_ development
+
+`composer require tiny-pixel/block-composer`
+
 ## Get Shit Done Again
 
 Crying in the shower about how the first half of 2019 has gone? Well dry off, pump some jams and maybe throw a couple darts at your Mullenwag dartboard. Because it's time to feel _fluent_ again. After all, we're _developers_ and that's just _how we roll, B._

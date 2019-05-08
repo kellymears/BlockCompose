@@ -1,8 +1,8 @@
 {
-  "name": "tiny-pixel/block-builder",
+  "name": "tiny-pixel/block-composer",
   "type": "library",
   "license": "MIT",
-  "description": "Object oriented helper library for WordPress 5",
+  "description": "Compose views using WordPress blocks",
   "homepage": "https://tinypixel.dev",
   "authors": [
     {
@@ -17,7 +17,7 @@
   ],
   "autoload": {
     "psr-4": {
-      "Blocks\\": ""
+      "BlockCompose\\": ""
     }
   },
   "require": {
