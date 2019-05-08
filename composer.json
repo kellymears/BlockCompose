@@ -1,5 +1,5 @@
 {
-  "name": "tiny-pixel/block-composer",
+  "name": "tiny-pixel/block-compose",
   "type": "library",
   "license": "MIT",
   "description": "Compose views using WordPress blocks",
