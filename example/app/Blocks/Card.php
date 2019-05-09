@@ -8,11 +8,20 @@ use \BlockCompose\Traits\Compose;
 
 class Card extends Composer
 {
-    public $name = 'card'; // block name
+    // block details
+    public $name = 'card'; // block names
     public $namespace = 'sage'; // block namespace
-    public $style = 'sage/blocks'; // registered style
     public $editor_script = 'sage/blocks'; // registered script
 
+    // (optional) associate with registered style
+    public $style = 'sage/blocks';
+
+    // (optional) override view
+    public $view = 'blocks.card';
+
+    /**
+     * Set block attributes
+     */
     public function attributes()
     {
         return [
@@ -21,17 +30,30 @@ class Card extends Composer
         ];
     }
 
-
-    // Modify source block data prior viewWith hook
-    public function processBlockData($block, $source_block)
+    /**
+     * Manipulate view data
+     *
+     * @return array associative
+     */
+    public function with($data)
     {
-        return $block;
+        return $data;
     }
 
-    // Modify attributes and markup prior to view
-    public function viewWith($attributes, $content)
+    /**
+     * Manipulate source block data
+     */
+    public function withContent($content)
     {
-        return $attributes;
+        return $content;
+    }
+
+    /**
+     * Manipulate source block data
+     */
+    public function withData($block, $source)
+    {
+        return $block;
     }
 
     use Compose;

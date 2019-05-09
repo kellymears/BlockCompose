@@ -39,9 +39,7 @@ $script = (new Script([
 new Blocks\Card();
 ```
 
-### Compose
-
-Next, it probably makes sense to check out the `Card` class.
+### Composer
 
 ```php
 
@@ -53,11 +51,20 @@ use \BlockCompose\Traits\Compose;
 
 class Card extends Composer
 {
-    public $name = 'card'; // block name
+    // block details
+    public $name = 'card'; // block names
     public $namespace = 'sage'; // block namespace
-    public $style = 'sage/blocks'; // registered style
     public $editor_script = 'sage/blocks'; // registered script
 
+    // (optional) associate with registered style
+    public $style = 'sage/blocks';
+
+    // (optional) override view
+    public $view = 'blocks.card';
+
+    /**
+     * Set block attributes
+     */
     public function attributes()
     {
         return [
@@ -66,32 +73,35 @@ class Card extends Composer
         ];
     }
 
-
-    // Modify source block data prior viewWith hook
-    public function processBlockData($block, $source_block)
+    /**
+     * Manipulate view data
+     *
+     * @return array associative
+     */
+    public function with($data)
     {
-        return $block;
+        return $data;
     }
 
-    // Modify attributes and markup prior to view
-    public function viewWith($attributes, $content)
+    /**
+     * Manipulate source block data
+     */
+    public function withContent($content)
     {
-        return $attributes;
+        return $content;
+    }
+
+    /**
+     * Manipulate source block data
+     */
+    public function withData($block, $source)
+    {
+        return $block;
     }
 
     use Compose;
 }
 ```
-
-After the boilerplate you'll need to set the `name`, `namespace` and `editor_script` parameters. These need to match up with your blockname and your scriptname, respectively.
-
-In the `attributes` method you need to return an array of attributes for use in the block. Here, I am using the `Blocks\Attribute` class to make it a little easier, but -- as with `\Block\Script` -- this is totally optional. You can also just return an associative array as specified by the WordPress API.
-
-The `viewWith` method is optional and gives you a chance to manipulate the attributes that will be made available to your view. This is useful when your block attributes are returning data to be used in a posts query, for example.
-
-Note that `viewWith` does not expose attributes with default values, amongst other things. It's weird. But `processBlockData` exposes all available block data for manipulation. This method will be called directly _before_ `viewWith`
-
-That's it. When this block is requested on the frontend, it will be composed by these rules and rendered with its associated Blade view. In the example card block above the view called is `blocks.card`.
 
 ### View
 
@@ -99,16 +109,28 @@ No surprises here:
 
 ```php
 <div class="card">
+  @if(isset($block->attributes->mediaURL))
+    <img class="card-image" src="{!! $block->attributes->mediaURL !!}">
+  @endif
   <div class="card-content">
-    <div class="card-content__heading">{!! $heading !!}</div>
-    <p class="card-content__copy">{!! $copy !!}</p>
+    <div class="card__heading">{!! $block->attributes->heading !!}</div>
+    <p class="card__copy">{!! $block->attributes->copy !!}</p>
   </div>
 </div>
 ```
 
+If you utilize `<InnerBlocks>` in your custom blocktype, that content is made accessible via `$block->content` in your view.
+
 ### The script
 
-You are not required to write a `save()` method in your `registerBlockType()` script. The Composer has taken over that function. So that really just leaves the block registration and edit method. Here's our card's script (combined into one file for ease of reading):
+You are not required to write a `save()` method in your `registerBlockType()` script, with one exception: if you use InnerBlocks you must register a `save()` handle. This should suffice:
+
+`js
+...,
+save: () => { return <div><InnerBlocks.Content /></div> }
+```
+
+otherwise, this is sufficient:
 
 ```js
 import { __ } from '@wordpress/i18n'
@@ -130,21 +152,13 @@ registerBlockType('sage/card', {
   edit: ({ className, setAttributes, attributes }) => {
     return (
       <div className={className}>
-        <div className="card">
-          <div className="card-content">
-            <RichText
-              tagName="div"
-              className="card-content__heading"
-              value={attributes.heading}
-              placeholder={__('Heading', 'sage')}
-              onChange={value => { setAttributes({ heading: value }) }} />
-            <RichText
-              tagName="div"
-              className="card-content__copy"
-              value={attributes.copy}
-              placeholder={__('Copy go here', 'sage')}
-              onChange={value => { setAttributes({ copy: value }) }} />
-          </div>
+        <div className="card-content">
+          <RichText
+            tagName="div"
+            className="card-content__copy"
+            value={attributes.copy}
+            placeholder={__('Copy go here', 'sage')}
+            onChange={value => { setAttributes({ copy: value }) }} />
         </div>
       </div>
     )
