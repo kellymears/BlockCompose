@@ -19,7 +19,6 @@ Check out the included `Card` block in the `example` directory to see how to get
 Minimally, a block view composer contains `name`, `namespace`, `editor_script` and `view` parameters accompanied by an `attributes` method.
 
 ```php
-
 namespace App\Blocks;
 
 use \TinyPixel\BlockCompose\Composer;
@@ -44,7 +43,6 @@ class Starter extends Composer
 
     use Compose;
 }
-
 ```
 
 For your convenience, you can use the `BlockCompose\Attribute` helper class in your composition. Or -- if you prefer -- just return an associative array as per the WordPress spec.
@@ -54,7 +52,6 @@ For your convenience, you can use the `BlockCompose\Attribute` helper class in y
 For your convenience, you can utilize the `BlockCompose\Script` helper class to make block script registration less annoying:
 
 ```php
-
 use \TinyPixel\BlockCompose\Script;
 
 $script = (new Script([
@@ -63,7 +60,6 @@ $script = (new Script([
     'file'      => 'blocks/index.js',
     'type'      => 'block',
 ]))->register();
-
 ```
 
 ### View
@@ -89,12 +85,11 @@ If you utilize `<InnerBlocks>` in your custom blocktype in order to compose with
 You can utilize three optional methods to handle parsing your block data, block markup and view variable templating:
 
 ```php
-
 namespace App\Blocks;
 
-use \BlockCompose\Composer;
-use \BlockCompose\Attribute;
-use \BlockCompose\Traits\Compose;
+use \TinyPixel\BlockCompose\Composer;
+use \TinyPixel\BlockCompose\Attribute;
+use \TinyPixel\BlockCompose\Traits\Compose;
 
 class Card extends Composer
 {
