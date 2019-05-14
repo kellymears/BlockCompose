@@ -2,30 +2,61 @@
 
 View composer and attribute builder for Sage 10 and WordPress' Project Gutenberg editor.
 
-## ⚠️ Package: this is still in _active_ development
-
-`composer require tiny-pixel/block-compose`
-
 ## Get Shit Done Again
 
 Crying in the shower about how the first half of 2019 has gone? Well dry off, pump some jams and maybe throw a couple darts at your Mullenwag dartboard. Because it's time to feel _fluent_ again. After all, we're _developers_ and that's just _how we roll, B._
 
 Check out the included `Card` block in the `example` directory to see how to get started.
 
-## A quick tour
+## Installation
 
-In `register.php` we set our script and instantiate our Card. Where this is done is unimportant. The use of the script helper is optional. You will need to reference the associated script from the block Composer; the convention being used is `namespace/name`:
+- `composer require tiny-pixel/block-compose`
+- Add `\TinyPixel\BlockCompose\BlockComposeServiceProvider::class` to your registered service providers in `config/app.php`.
+- Create a directory for your blocks: `app/Blocks`. [This will likely be scaffolded for you when the Sage CLI is operational.]
+
+### Writing a Block View Composer
+
+Minimally, a block view composer contains `name`, `namespace`, `editor_script` and `view` parameters accompanied by an `attributes` method.
 
 ```php
 
-namespace App;
+namespace App\Blocks;
 
-use \App\Blocks;
-use \BlockCompose\Script;
+use \TinyPixel\BlockCompose\Composer;
+use \TinyPixel\BlockCompose\Attribute;
+use \TinyPixel\BlockCompose\Traits\Compose;
 
-/**
- * Helper avaialable to register your script
- */
+class Starter extends Composer
+{
+    public $name = 'starter'; // block name
+    public $namespace = 'sage'; // block namespace
+    public $editor_script = 'sage/starter'; // registered script
+
+    public $view = 'blocks.starter'; // associate view
+
+    public function attributes()
+    {
+        return [
+            new Attribute('heading', 'string'),
+            new Attribute('example', 'url'),
+        ];
+    }
+
+    use Compose;
+}
+
+```
+
+For your convenience, you can use the `BlockCompose\Attribute` helper class in your composition. Or -- if you prefer -- just return an associative array as per the WordPress spec.
+
+### Script registration
+
+For your convenience, you can utilize the `BlockCompose\Script` helper class to make block script registration less annoying:
+
+```php
+
+use \TinyPixel\BlockCompose\Script;
+
 $script = (new Script([
     'name'      => 'blocks',
     'namespace' => 'sage',
@@ -33,13 +64,29 @@ $script = (new Script([
     'type'      => 'block',
 ]))->register();
 
-/**
- * Instantiate card block
- */
-new Blocks\Card();
 ```
 
-### Composer
+### View
+
+Block attributes are made available in the view in this format: `$block->attributes->attribute_name`.
+
+```php
+<div class="card">
+  @if(isset($block->attributes->mediaURL))
+    <img class="card-image" src="{!! $block->attributes->mediaURL !!}">
+  @endif
+  <div class="card-content">
+    <div class="card__heading">{!! $block->attributes->heading !!}</div>
+    <p class="card__copy">{!! $block->attributes->copy !!}</p>
+  </div>
+</div>
+```
+
+If you utilize `<InnerBlocks>` in your custom blocktype in order to compose with nested blocks, that content is automatically pulled from the block data by the BlockComposer class and made accessible via `$block->content` in your view.
+
+### Advanced
+
+You can utilize three optional methods to handle parsing your block data, block markup and view variable templating:
 
 ```php
 
@@ -51,27 +98,8 @@ use \BlockCompose\Traits\Compose;
 
 class Card extends Composer
 {
-    // block details
-    public $name = 'card'; // block names
-    public $namespace = 'sage'; // block namespace
-    public $editor_script = 'sage/blocks'; // registered script
 
-    // (optional) associate with registered style
-    public $style = 'sage/blocks';
-
-    // (optional) override view
-    public $view = 'blocks.card';
-
-    /**
-     * Set block attributes
-     */
-    public function attributes()
-    {
-        return [
-            new Attribute('heading', 'string'),
-            new Attribute('copy', 'string'),
-        ];
-    }
+    // ...
 
     /**
      * Manipulate view data
@@ -103,34 +131,16 @@ class Card extends Composer
 }
 ```
 
-### View
-
-No surprises here:
-
-```php
-<div class="card">
-  @if(isset($block->attributes->mediaURL))
-    <img class="card-image" src="{!! $block->attributes->mediaURL !!}">
-  @endif
-  <div class="card-content">
-    <div class="card__heading">{!! $block->attributes->heading !!}</div>
-    <p class="card__copy">{!! $block->attributes->copy !!}</p>
-  </div>
-</div>
-```
-
-If you utilize `<InnerBlocks>` in your custom blocktype, that content is made accessible via `$block->content` in your view.
-
 ### The script
 
-You are not required to write a `save()` method in your `registerBlockType()` script, with one exception: if you use InnerBlocks you must register a `save()` handle. This should suffice:
+You are not required to write a `save()` method in your `registerBlockType()` script, with one exception: if you use InnerBlocks you must register a `save()` handle. It does not need to return anything substantive but I've found it requires at least one element to wrap it. This should suffice:
 
-`js
-...,
+```js
+// ...,
 save: () => { return <div><InnerBlocks.Content /></div> }
 ```
 
-otherwise, this is sufficient:
+Otherwise, this is a sufficient and functional example:
 
 ```js
 import { __ } from '@wordpress/i18n'
@@ -152,14 +162,12 @@ registerBlockType('sage/card', {
   edit: ({ className, setAttributes, attributes }) => {
     return (
       <div className={className}>
-        <div className="card-content">
-          <RichText
-            tagName="div"
-            className="card-content__copy"
-            value={attributes.copy}
-            placeholder={__('Copy go here', 'sage')}
-            onChange={value => { setAttributes({ copy: value }) }} />
-        </div>
+        <RichText
+          tagName="div"
+          className="card-content__copy"
+          value={attributes.copy}
+          placeholder={__('Copy go here', 'sage')}
+          onChange={value => { setAttributes({ copy: value }) }} />
       </div>
     )
   },

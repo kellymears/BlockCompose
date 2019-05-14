@@ -2,22 +2,18 @@
 
 namespace App\Blocks;
 
-use \BlockCompose\Composer;
-use \BlockCompose\Attribute;
-use \BlockCompose\Traits\Compose;
+use \TinyPixel\BlockCompose\Composer;
+use \TinyPixel\BlockCompose\Attribute;
+use \TinyPixel\BlockCompose\Traits\Compose;
 
 class Card extends Composer
 {
     // block details
-    public $name = 'card'; // block names
+    public $name = 'card'; // block name
     public $namespace = 'sage'; // block namespace
     public $editor_script = 'sage/blocks'; // registered script
 
-    // (optional) associate with registered style
-    public $style = 'sage/blocks';
-
-    // (optional) override view
-    public $view = 'blocks.card';
+    public $view = 'blocks.card'; // associate view
 
     /**
      * Set block attributes
@@ -28,32 +24,6 @@ class Card extends Composer
             new Attribute('heading', 'string'),
             new Attribute('copy', 'string'),
         ];
-    }
-
-    /**
-     * Manipulate view data
-     *
-     * @return array associative
-     */
-    public function with($data)
-    {
-        return $data;
-    }
-
-    /**
-     * Manipulate source block data
-     */
-    public function withContent($content)
-    {
-        return $content;
-    }
-
-    /**
-     * Manipulate source block data
-     */
-    public function withData($block, $source)
-    {
-        return $block;
     }
 
     use Compose;

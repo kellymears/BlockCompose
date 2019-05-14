@@ -14,8 +14,3 @@ $script = (new Script([
     'file'      => 'blocks/index.js',
     'type'      => 'block',
 ]))->register();
-
-/**
- * Instantiate card block
- */
-new Blocks\Card();
