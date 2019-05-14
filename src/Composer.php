@@ -92,7 +92,6 @@ class Composer
     {
         add_filter('render_block', function ($block_content, $block) {
             $data = $this->withContent($block_content);
-
             return $data;
         }, 10, 2);
     }

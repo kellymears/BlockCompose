@@ -25,10 +25,10 @@ class BaseServiceProvider extends ServiceProvider
         collect(glob($this->app->basePath('app/'. $dir . '/*.php')))->map(
             function ($file) use ($dir) {
                 $src = $this->formatBindings($dir, $file);
-                print_r($src);
                 $this->app->bind($src->handle, function () use ($src) {
                     return new $src->class;
                 });
+
                 $this->bound->push($src->handle);
             }
         );
