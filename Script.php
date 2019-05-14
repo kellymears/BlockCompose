@@ -2,7 +2,9 @@
 
 namespace BlockCompose;
 
-use function \Roots\asset;
+use function Roots\config;
+use function Roots\asset;
+use function Roots\app;
 
 /**
  * Script
@@ -42,31 +44,18 @@ class Script
      */
     public function __construct($definition = null)
     {
-        $this->dependencies = (object) [
-            'blocks' => [
-                'wp-editor',
-                'wp-element',
-                'wp-i18n',
-                'wp-components',
-                'wp-blocks',
-            ],
-            'plugins' => [
-                'wp-editor',
-                'wp-element',
-                'wp-i18n',
-                'wp-components',
-                'wp-plugins',
-            ],
+        $this->dependencies = [
+            'wp-editor',
+            'wp-element',
+            'wp-i18n',
+            'wp-components',
+            'wp-blocks',
+            'wp-plugins',
         ];
 
         if (isset($definition)) {
-            $this->defineScript($definition);
+            $this->define($definition);
         }
-
-        /**
-         * Temp hack
-         */
-        $this->base_path = '/storage/theme/assets';
 
         return $this;
     }
@@ -88,6 +77,19 @@ class Script
                 $this->defer,
             );
         });
+
+        return $this;
+    }
+
+    /**
+     * Enqueue block editor asset
+     *
+     */
+    public function enqueueBlockScript()
+    {
+        add_action('enqueue_block_editor_assets', function () {
+            wp_enqueue_script($this->getDesignation());
+        });
     }
 
     /**
@@ -96,18 +98,16 @@ class Script
      * @param  array script spec
      * @return self
      */
-    public function defineScript(array $script)
+    public function define(array $script)
     {
         if (isset($script['name'])) {
             $this->setName($script['name']);
         }
 
-        if (isset($script['namespace'])) {
+        if (!isset($script['namespace'])) {
+            $this->setNamespace(config('editor.namespace'));
+        } else {
             $this->setNamespace($script['namespace']);
-        }
-
-        if (isset($script['type'])) {
-            $this->setType($script['type']);
         }
 
         if (isset($script['file'])) {
@@ -130,20 +130,7 @@ class Script
      */
     private function getAsset()
     {
-        return get_theme_file_uri("{$this->base_path}/{$this->file}");
-    }
-
-    /**
-     * Set namespace
-     *
-     * @param  string script namespace
-     * @return self
-     */
-    public function setNamespace(string $namespace)
-    {
-        $this->namespace = $namespace;
-
-        return $this;
+        return asset($this->file);
     }
 
     /**
@@ -154,7 +141,18 @@ class Script
      */
     public function getNamespace()
     {
-        return $this->namespace;
+        return config('editor.namespace');
+    }
+
+    /**
+     * Set namespace
+     *
+     * @param  void
+     * @return self
+     */
+    public function setNamespace($namespace)
+    {
+        $this->namespace = $namespace;
     }
 
     /**
@@ -273,11 +271,6 @@ class Script
      */
     public function getDependencies()
     {
-        if ($this->type == 'block') {
-            return $this->dependencies->blocks;
-        } elseif ($this->type == 'plugin') {
-            return $this->dependencies->plugins;
-        }
-        return null;
+        return $this->dependencies;
     }
 }

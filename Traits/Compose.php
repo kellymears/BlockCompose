@@ -2,9 +2,6 @@
 
 namespace BlockCompose\Traits;
 
-use Illuminate\View\View;
-use Illuminate\Support\Str;
-
 trait Compose
 {
     /**

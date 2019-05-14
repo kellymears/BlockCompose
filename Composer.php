@@ -2,9 +2,13 @@
 
 namespace BlockCompose;
 
+use function Roots\app;
+use function Roots\view;
+use function Roots\config;
+
+use View;
+
 use BlockCompose\Traits\Compose;
-use Illuminate\View\View;
-use Illuminate\Support\Str;
 
 /**
  * Block Composer
@@ -16,9 +20,11 @@ class Composer
 {
     public $view = 'blocks.layout';
 
-    public function __construct()
+    public function init()
     {
-        $this->compose();
+        $this->setNamespace(config('editor.namespace'));
+
+        return $this;
     }
 
     /**
@@ -34,18 +40,28 @@ class Composer
         $this->renderBlockData();
 
         add_action('init', function () {
-            register_block_type("{$this->namespace}/{$this->name}", [
+            register_block_type("{$this->getNamespace()}/{$this->name}", [
                 'attributes' => [collect($this->attributes())->toArray()],
                 'style'  => $this->style  ?? null,
                 'script' => $this->script ?? null,
                 'editor_script' => $this->editor_script, // required
                 'render_callback' => function ($attributes, $content) {
-                    return view($this->view, [
+                    return View::make($this->view, [
                         'block' => $this->yieldViewData($attributes, $content)
                     ]);
                 }
             ]);
         });
+    }
+
+    public function getNamespace()
+    {
+        return $this->namespace;
+    }
+
+    public function setNamespace($namespace)
+    {
+        $this->namespace = $namespace;
     }
 
     /**
