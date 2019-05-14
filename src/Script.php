@@ -1,6 +1,6 @@
 <?php
 
-namespace BlockCompose;
+namespace TinyPixel\BlockCompose;
 
 use function Roots\config;
 use function Roots\asset;

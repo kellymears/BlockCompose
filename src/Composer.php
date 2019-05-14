@@ -1,6 +1,6 @@
 <?php
 
-namespace BlockCompose;
+namespace TinyPixel\BlockCompose;
 
 use function Roots\app;
 use function Roots\view;
@@ -8,7 +8,7 @@ use function Roots\config;
 
 use View;
 
-use BlockCompose\Traits\Compose;
+use \TinyPixel\BlockCompose\Traits\Compose;
 
 /**
  * Block Composer
