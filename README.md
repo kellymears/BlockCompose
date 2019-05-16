@@ -4,19 +4,22 @@ View composer and attribute builder for Sage 10 and WordPress' Project Gutenberg
 
 ## Get Shit Done Again
 
-Crying in the shower about how the first half of 2019 has gone? Well dry off, pump some jams and maybe throw a couple darts at your Mullenwag dartboard. Because it's time to feel _fluent_ again. After all, we're _developers_ and that's just _how we roll, B._
-
-Check out the included `Card` block in the `example` directory to see how to get started.
+Crying in the shower about how the first half of 2019 has gone? Well dry off, pump some jams and maybe throw a couple darts at your Mullenwag dartboard. Because it's time to feel _fluent_ again.
 
 ## Installation
 
 - `composer require tiny-pixel/block-compose`
-- Add `\TinyPixel\BlockCompose\BlockComposeServiceProvider::class` to your registered service providers in `config/app.php`.
-- Create a directory for your blocks: `app/Blocks`. [This will likely be scaffolded for you when the Sage CLI is operational.]
+- Scaffolding: `app/Blocks` and `config/editor.php`.
+
+### Configuration
+
+For the time being the config file for the Block Compose library needs to be copied manually to `config/editor.php`.
+
+The usage of this file is very straightforward and is commented in a Laravel style.
 
 ### Writing a Block View Composer
 
-Minimally, a block view composer contains `name`, `namespace`, `editor_script` and `view` parameters accompanied by an `attributes` method.
+Minimally, a block view composer contains `name`, `editor_script` and `view` parameters accompanied by an `attributes` method.
 
 ```php
 namespace App\Blocks;
@@ -28,9 +31,7 @@ use \TinyPixel\BlockCompose\Traits\Compose;
 class Starter extends Composer
 {
     public $name = 'starter'; // block name
-    public $namespace = 'sage'; // block namespace
     public $editor_script = 'sage/starter'; // registered script
-
     public $view = 'blocks.starter'; // associate view
 
     public function attributes()
@@ -46,21 +47,6 @@ class Starter extends Composer
 ```
 
 For your convenience, you can use the `BlockCompose\Attribute` helper class in your composition. Or -- if you prefer -- just return an associative array as per the WordPress spec.
-
-### Script registration
-
-For your convenience, you can utilize the `BlockCompose\Script` helper class to make block script registration less annoying:
-
-```php
-use \TinyPixel\BlockCompose\Script;
-
-$script = (new Script([
-    'name'      => 'blocks',
-    'namespace' => 'sage',
-    'file'      => 'blocks/index.js',
-    'type'      => 'block',
-]))->register();
-```
 
 ### View
 
@@ -79,52 +65,6 @@ Block attributes are made available in the view in this format: `$block->attribu
 ```
 
 If you utilize `<InnerBlocks>` in your custom blocktype in order to compose with nested blocks, that content is automatically pulled from the block data by the BlockComposer class and made accessible via `$block->content` in your view.
-
-### Advanced
-
-You can utilize three optional methods to handle parsing your block data, block markup and view variable templating:
-
-```php
-namespace App\Blocks;
-
-use \TinyPixel\BlockCompose\Composer;
-use \TinyPixel\BlockCompose\Attribute;
-use \TinyPixel\BlockCompose\Traits\Compose;
-
-class Card extends Composer
-{
-
-    // ...
-
-    /**
-     * Manipulate view data
-     *
-     * @return array associative
-     */
-    public function with($data)
-    {
-        return $data;
-    }
-
-    /**
-     * Manipulate source block data
-     */
-    public function withContent($content)
-    {
-        return $content;
-    }
-
-    /**
-     * Manipulate source block data
-     */
-    public function withData($block, $source)
-    {
-        return $block;
-    }
-
-    use Compose;
-}
-```
 
 ### The script
 
@@ -171,6 +111,52 @@ registerBlockType('sage/card', {
 ```
 
 Honestly, not writing that save handler makes _a world of difference_. The vast majority of that is actually just HTML, really.
+
+### Advanced Composition
+
+You can utilize three optional methods to handle parsing your block data, block markup and view variable templating:
+
+```php
+namespace App\Blocks;
+
+use \TinyPixel\BlockCompose\Composer;
+use \TinyPixel\BlockCompose\Attribute;
+use \TinyPixel\BlockCompose\Traits\Compose;
+
+class Card extends Composer
+{
+
+    // ...
+
+    /**
+     * Manipulate view data
+     *
+     * @return array associative
+     */
+    public function with($data)
+    {
+        return $data;
+    }
+
+    /**
+     * Manipulate source block data
+     */
+    public function withContent($content)
+    {
+        return $content;
+    }
+
+    /**
+     * Manipulate source block data
+     */
+    public function withData($block, $source)
+    {
+        return $block;
+    }
+
+    use Compose;
+}
+```
 
 ## Thanks for checking out the repo!
 
