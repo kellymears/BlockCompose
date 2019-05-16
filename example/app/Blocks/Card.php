@@ -9,10 +9,8 @@ use \TinyPixel\BlockCompose\Traits\Compose;
 class Card extends Composer
 {
     // block details
-    public $name = 'card'; // block name
-    public $namespace = 'sage'; // block namespace
+    public $name = 'sage/card'; // block name
     public $editor_script = 'sage/blocks'; // registered script
-
     public $view = 'blocks.card'; // associate view
 
     /**

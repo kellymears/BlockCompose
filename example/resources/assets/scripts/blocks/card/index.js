@@ -19,7 +19,7 @@ const attributes = {
 registerBlockType('sage/card', {
   title: __('Card', 'sage'),
   icon: 'wordpress',
-  category: 'common',
+  category: 'app',
   attributes,
   edit: edit,
   save: () => { return null },

@@ -40,11 +40,12 @@ class Composer
         $this->renderBlockData();
 
         add_action('init', function () {
-            register_block_type("{$this->getNamespace()}/{$this->name}", [
-                'attributes' => [collect($this->attributes())->toArray()],
-                'style'  => $this->style  ?? null,
-                'script' => $this->script ?? null,
-                'editor_script' => $this->editor_script, // required
+            register_block_type($this->name, [
+                'attributes'      => [collect($this->attributes())->toArray()],
+                'script'          => isset($this->script) ?: null,
+                'style'           => isset($this->style) ?: null,
+                'editor_style'    => isset($this->editor_style) ?: null,
+                'editor_script'   => $this->editor_script,
                 'render_callback' => function ($attributes, $content) {
                     return View::make($this->view, [
                         'block' => $this->yieldViewData($attributes, $content)
