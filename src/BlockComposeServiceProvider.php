@@ -38,6 +38,45 @@ class BlockComposeServiceProvider extends BaseServiceProvider
         $this->registerBlockCategories(
             collect(config('editor.block_categories'))
         );
+
+        add_theme_support('editor-color-palette', collect(config('editor.color_palette'))->toArray());
+
+        if (config('editor.disable_color_palette')==true) {
+            add_theme_support('disable-custom-colors');
+        }
+
+        add_theme_support('editor-font-sizes', collect(config('editor.font_sizes'))->toArray());
+
+        if (config('editor.disable_color_palette')==true) {
+            add_theme_support('disable-custom-font-sizes');
+        }
+
+        if (config('editor.supports_wide_alignments')==true) {
+            add_theme_support('align-wide');
+        }
+
+        if (config('editor.default_block_styles')==true) {
+            add_theme_support('wp-block-styles');
+        }
+
+        if (config('editor.editor_styles')==true) {
+            add_theme_support('editor-styles');
+        }
+
+        if (config('editor.dark_editor_styles')==true) {
+            add_theme_support('dark-editor-style');
+        }
+
+        if (config('responsive_embeds')==true) {
+            add_theme_support('responsive-embeds');
+        }
+
+        add_action('admin_print_scripts', function () {
+            if (\Roots\config('editor.debug')==true) {
+                global $wp_scripts;
+                dd($wp_scripts);
+            }
+        });
     }
 
     /**
