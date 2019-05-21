@@ -25,24 +25,12 @@ Minimally, a block view composer contains `name`, `editor_script` and `view` par
 namespace App\Blocks;
 
 use \TinyPixel\BlockCompose\Composer;
-use \TinyPixel\BlockCompose\Attribute;
-use \TinyPixel\BlockCompose\Traits\Compose;
 
 class Starter extends Composer
 {
     public $name = 'starter'; // block name
     public $editor_script = 'sage/starter'; // registered script
     public $view = 'blocks.starter'; // associate view
-
-    public function attributes()
-    {
-        return [
-            new Attribute('heading', 'string'),
-            new Attribute('example', 'url'),
-        ];
-    }
-
-    use Compose;
 }
 ```
 
