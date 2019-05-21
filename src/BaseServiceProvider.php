@@ -2,7 +2,8 @@
 
 namespace TinyPixel\BlockCompose;
 
-use Roots\Acorn\ServiceProvider;
+use function \Roots\config;
+use \Roots\Acorn\ServiceProvider;
 
 class BaseServiceProvider extends ServiceProvider
 {

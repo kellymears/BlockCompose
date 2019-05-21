@@ -6,8 +6,6 @@ use function Roots\app;
 use function Roots\view;
 use function Roots\config;
 
-use View;
-
 use \TinyPixel\BlockCompose\Traits\Compose;
 
 /**
@@ -18,14 +16,10 @@ use \TinyPixel\BlockCompose\Traits\Compose;
  */
 class Composer
 {
+    /**
+     * Default view
+     */
     public $view = 'blocks.layout';
-
-    public function init()
-    {
-        $this->setNamespace(config('editor.namespace'));
-
-        return $this;
-    }
 
     /**
      * Register blocktype with WordPress and establish view
@@ -41,28 +35,15 @@ class Composer
 
         add_action('init', function () {
             register_block_type($this->name, [
-                'attributes'      => [collect($this->attributes())->toArray()],
                 'script'          => isset($this->script) ?: null,
                 'style'           => isset($this->style) ?: null,
                 'editor_style'    => isset($this->editor_style) ?: null,
                 'editor_script'   => $this->editor_script,
                 'render_callback' => function ($attributes, $content) {
-                    return View::make($this->view, [
-                        'block' => $this->yieldViewData($attributes, $content)
-                    ]);
+                    return view($this->view, ['block' => $this->yieldViewData($attributes, $content)]);
                 }
             ]);
         });
-    }
-
-    public function getNamespace()
-    {
-        return $this->namespace;
-    }
-
-    public function setNamespace($namespace)
-    {
-        $this->namespace = $namespace;
     }
 
     /**
@@ -73,13 +54,11 @@ class Composer
      */
     public function yieldViewData($attributes, $content)
     {
-        $data = [
+        return (object)$this->with(collect([
             'name'       => $this->name,
             'content'    => $content,
             'attributes' => (object) $attributes,
-        ];
-
-        return (object) $this->with($data);
+        ])->toArray());
     }
 
     /**
@@ -93,6 +72,7 @@ class Composer
     {
         add_filter('render_block', function ($block_content, $block) {
             $data = $this->withContent($block_content);
+
             return $data;
         }, 10, 2);
     }
