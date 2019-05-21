@@ -34,8 +34,6 @@ class Starter extends Composer
 }
 ```
 
-For your convenience, you can use the `BlockCompose\Attribute` helper class in your composition. Or -- if you prefer -- just return an associative array as per the WordPress spec.
-
 ### View
 
 Block attributes are made available in the view in this format: `$block->attributes->attribute_name`.
@@ -104,15 +102,21 @@ Honestly, not writing that save handler makes _a world of difference_. The vast 
 
 You can utilize three optional methods to handle parsing your block data, block markup and view variable templating:
 
+`with` allows for the modification of data directly before it is compiled with Blade
+
+`withData` allows for the modification of the block source. Note that the block source is automatically inserted as a block attribute by BlockCompose (available as `$block->attributes->source` so there may not be much utility here for the time being.
+
+
+
 ```php
 namespace App\Blocks;
 
 use \TinyPixel\BlockCompose\Composer;
-use \TinyPixel\BlockCompose\Attribute;
 use \TinyPixel\BlockCompose\Traits\Compose;
 
 class Card extends Composer
 {
+    use Compose;
 
     // ...
 
@@ -129,20 +133,10 @@ class Card extends Composer
     /**
      * Manipulate source block data
      */
-    public function withContent($content)
-    {
-        return $content;
-    }
-
-    /**
-     * Manipulate source block data
-     */
     public function withData($block, $source)
     {
         return $block;
     }
-
-    use Compose;
 }
 ```
 
